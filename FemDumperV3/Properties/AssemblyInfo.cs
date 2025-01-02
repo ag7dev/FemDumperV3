@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -7,10 +7,10 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 [assembly: AssemblyTitle("FemDumperV3")]
 [assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyConfiguration("ag7-dev.de")]
 [assembly: AssemblyCompany("jambit GmbH")]
 [assembly: AssemblyProduct("FemDumperV3")]
-[assembly: AssemblyCopyright("Copyright © jambit GmbH 2024")]
+[assembly: AssemblyCopyright("Copyright © ag7-dev.de 2024")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
