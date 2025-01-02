@@ -7,8 +7,8 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 [assembly: AssemblyTitle("FemDumperV3")]
 [assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("ag7-dev.de")]
-[assembly: AssemblyCompany("jambit GmbH")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("ag7-dev.de")]
 [assembly: AssemblyProduct("FemDumperV3")]
 [assembly: AssemblyCopyright("Copyright © ag7-dev.de 2024")]
 [assembly: AssemblyTrademark("")]
