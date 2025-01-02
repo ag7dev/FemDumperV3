@@ -180,6 +180,7 @@ IF YOU PAYD FOR THIS YOU GOT SCAMMED!
         string TriggerFilePath = Path.Combine(femdumperFolder, "trigger_events.txt");
         string AcKeywordsFilePath = Path.Combine(femdumperFolder, "anticheat_keywords.txt");
         string AcsFoundsFilePath = Path.Combine(femdumperFolder, "acs_founds.txt");
+        string CoordsFoundsFilePath = Path.Combine(femdumperFolder, "coords_founds.txt");
 
 
         string[] foldersToIgnore = { "monitor", "easyadmin" };
@@ -210,10 +211,11 @@ IF YOU PAYD FOR THIS YOU GOT SCAMMED!
             Console.WriteLine("3. Find Discord Webhooks");
             Console.WriteLine("4. Try to Find Anticheat");
             Console.WriteLine("5. Find Variables");
-            Console.WriteLine("6. Run All Scans");
-            Console.WriteLine("7. Delete Webhooks");
-            Console.WriteLine("8. Get Webhook Informations");
-            Console.WriteLine("9. Exit");
+            Console.WriteLine("6. Find Coordinates");
+            Console.WriteLine("7. Run All Scans");
+            Console.WriteLine("8. Delete Webhooks");
+            Console.WriteLine("9. Get Webhook Informations");
+            Console.WriteLine("10. Exit");
             Console.WriteLine("######################################");
             Console.WriteLine();
 
@@ -324,6 +326,23 @@ IF YOU PAYD FOR THIS YOU GOT SCAMMED!
                     {
                         ClearScreen();
                         Console.ForegroundColor = ConsoleColor.Blue;
+                        Console.Write($"\r[ i ] You choose To search for Coordinates.");
+                        Console.ResetColor();
+                        FindAndListCoords(DumpPath, CoordsFoundsFilePath);
+                    }
+                    break;
+
+                case "7":
+                    if (DumpPath == "None")
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("[ ! ] Please set the server dump folder path first.");
+                        Console.ResetColor();
+                    }
+                    else
+                    {
+                        ClearScreen();
+                        Console.ForegroundColor = ConsoleColor.Blue;
                         Console.Write($"\r[ i ] You choose To Run all Scans, this can take a while.");
                         Console.ResetColor();
                         FindAndListTriggerEvents(DumpPath, TriggerFilePath);
@@ -333,7 +352,7 @@ IF YOU PAYD FOR THIS YOU GOT SCAMMED!
                     }
                     break;
 
-                case "7":
+                case "8":
                     if (DumpPath == "None")
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
@@ -350,7 +369,7 @@ IF YOU PAYD FOR THIS YOU GOT SCAMMED!
                     }
                     break;
 
-                case "8":
+                case "9":
                     if (DumpPath == "None")
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
@@ -367,7 +386,7 @@ IF YOU PAYD FOR THIS YOU GOT SCAMMED!
                     }
                     break;
 
-                case "9":
+                case "10":
                     Console.ForegroundColor = ConsoleColor.Blue;
                     Console.Write($"\r[ i ] Exiting");
                     Console.ResetColor();
@@ -744,6 +763,58 @@ IF YOU PAYD FOR THIS YOU GOT SCAMMED!
         }
     }
 
+
+    public static void FindAndListCoords(string path, string outputFile)
+    {
+        List<Tuple<string, int, string>> coordsList = new List<Tuple<string, int, string>>();
+
+        foreach (var filePath in Directory.EnumerateFiles(path, "*.lua", SearchOption.AllDirectories))
+        {
+            string folderName = Path.GetFileName(Path.GetDirectoryName(filePath));
+
+            try
+            {
+                foreach (var line in File.ReadLines(filePath, System.Text.Encoding.GetEncoding("ISO-8859-1")))
+                {
+                    // Regex für Vector3 und Vector4 Koordinaten
+                    if (Regex.IsMatch(line, @"\bvector[34]\s*\(\s*-?\d+(\.\d+)?\s*,\s*-?\d+(\.\d+)?\s*,\s*-?\d+(\.\d+)?(\s*,\s*-?\d+(\.\d+)?)?\s*\)"))
+                    {
+                        int lineNumber = Array.IndexOf(File.ReadAllLines(filePath), line) + 1;
+
+                        coordsList.Add(new Tuple<string, int, string>(folderName, lineNumber, line.Trim()));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"[ ! ] Error reading file {filePath}: {ex.Message}");
+                Console.ResetColor();
+            }
+        }
+
+        try
+        {
+            using (StreamWriter output = new StreamWriter(outputFile, true, System.Text.Encoding.UTF8))
+            {
+                output.WriteLine("\nCoordinates:");
+                foreach (var coord in coordsList)
+                {
+                    output.WriteLine($"[{coord.Item1}] - [Line {coord.Item2}] {coord.Item3}");
+                }
+            }
+
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("[ + ] Coordinates successfully listed and saved.");
+            Console.ResetColor();
+        }
+        catch (Exception ex)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine($"[ ! ] Error writing to the output file: {ex.Message}");
+            Console.ResetColor();
+        }
+    }
 
 
 
