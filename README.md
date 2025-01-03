@@ -26,7 +26,7 @@
 1. **Download the Repository:**
    - Click on the **Code** button on the top right and select **Download ZIP**, or clone the repository using Git:
      ```bash
-     git clone https://github.com/ag7dev/FemdumperV3.git
+     git clone https://github.com/ag7dev/FemDumperV3.git
      ```
 
 2. **Open the Project:**
